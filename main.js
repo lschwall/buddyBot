@@ -18,7 +18,6 @@ client.on('ready', connection => {
 
 client.on('message', msg => {
           const channel = msg.channel.id
-          const [command, ...args] = msg.content.split(' ');
 
           if (!msg.content.startsWith('!') || msg.author.bot) return;
 
@@ -29,19 +28,21 @@ client.on('message', msg => {
                               msg.channel.send(botInfo)
                     }
           }
-          if (channel === '724090833128914965') {
-                    if (command === '!romansaid') {
+          if (channel === '860330287329574923') {
+                    if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
+                              console.log(msg.content)
+                              const [command, ...args] = msg.content.split('!romansaid ');
                               let quote = args.toString();
                               quoteArr.push(quote)
                     }
 
-                    if (command === '!randomroman') {
+                    if (msg.content.toLowerCase().startsWith(prefix + 'randomroman')) {
                               let max = quoteArr.length
                               let r = Math.floor(Math.random() * max)
                               r === 0 ? msg.reply(`No quotes found`) : msg.reply(`Your random Roman quote: "${quoteArr[r]}"`)
                     }
           } else {
-                    if (command === '!romansaid') {
+                    if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
                               msg.author.bot ? null : msg.reply(`Please place in ${msg.guild.channels.cache.find(channel => channel.name === 'roman_justroman')}`)
                     }
           }
