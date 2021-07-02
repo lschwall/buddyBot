@@ -35,6 +35,7 @@ client.on('message', msg => {
                               const [command, ...args] = msg.content.split('!romansaid ');
                               let quote = args.toString();
                               quoteArr.push(quote)
+                              msg.reply('Thanks for adding!')
                     }
 
                     if (msg.content.toLowerCase().startsWith(prefix + 'randomroman')) {
