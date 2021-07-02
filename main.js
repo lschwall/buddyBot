@@ -20,6 +20,12 @@ client.on('ready', connection => {
 client.on('message', msg => {
           const channel = msg.channel.id
 
+          const randomMsg = () => {
+                    let max = quoteArr.length
+                    let r = Math.floor(Math.random() * max)
+                    r === 0 ? msg.reply(randomMsg) : msg.reply(`Your random Roman quote: "${quoteArr[r]}"`)
+          }
+
           if (!msg.content.startsWith('!') || msg.author.bot) return;
 
           if (msg.content.toLowerCase().startsWith(prefix + 'buddy')) {
@@ -39,9 +45,7 @@ client.on('message', msg => {
                     }
 
                     if (msg.content.toLowerCase().startsWith(prefix + 'randomroman')) {
-                              let max = quoteArr.length
-                              let r = Math.floor(Math.random() * max)
-                              r === 0 ? msg.reply(`Please try again`) : msg.reply(`Your random Roman quote: "${quoteArr[r]}"`)
+                              randomMsg();
                     }
           } else {
                     if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
