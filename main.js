@@ -10,6 +10,7 @@ const botInfo = new Discord.MessageEmbed()
 
 let quoteArr = [];
 let prefix = '!';
+let channelID = '724090833128914965';
 
 client.on('ready', connection => {
           console.log('bot online')
@@ -28,7 +29,7 @@ client.on('message', msg => {
                               msg.channel.send(botInfo)
                     }
           }
-          if (channel === '860330287329574923') {
+          if (channel === channelID) {
                     if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
                               console.log(msg.content)
                               const [command, ...args] = msg.content.split('!romansaid ');
