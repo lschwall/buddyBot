@@ -41,7 +41,7 @@ client.on('message', msg => {
                     if (msg.content.toLowerCase().startsWith(prefix + 'randomroman')) {
                               let max = quoteArr.length
                               let r = Math.floor(Math.random() * max)
-                              r === 0 ? msg.reply(`No quotes found`) : msg.reply(`Your random Roman quote: "${quoteArr[r]}"`)
+                              r === 0 ? msg.reply(`Please try again`) : msg.reply(`Your random Roman quote: "${quoteArr[r]}"`)
                     }
           } else {
                     if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
