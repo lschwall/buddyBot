@@ -19,15 +19,6 @@ client.on('ready', connection => {
 
 client.on('message', msg => {
           const channel = msg.channel.id
-
-          const randomMsg = () => {
-                    let max = quoteArr.length
-                    let r = Math.floor(Math.random() * max)
-                    r === 0 ? msg.reply(randomMsg) : msg.reply(`Your random Roman quote: "${quoteArr[r]}"`)
-          }
-
-          if (!msg.content.startsWith('!') || msg.author.bot) return;
-
           if (msg.content.toLowerCase().startsWith(prefix + 'buddy')) {
                     if (msg.author.bot) {
                               return;
@@ -35,9 +26,8 @@ client.on('message', msg => {
                               msg.channel.send(botInfo)
                     }
           }
-          if (channel === channelID) {
+          if (channel === '860330287329574923') {
                     if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
-                              console.log(msg.content)
                               const [command, ...args] = msg.content.split('!romansaid ');
                               let quote = args.toString();
                               quoteArr.push(quote)
@@ -45,7 +35,9 @@ client.on('message', msg => {
                     }
 
                     if (msg.content.toLowerCase().startsWith(prefix + 'randomroman')) {
-                              randomMsg();
+                              let max = quoteArr.length
+                              let r = Math.floor(Math.random() * (max + 1))
+                              r === 0 ? msg.reply(`Your random Roman quote: "${quoteArr[r] === undefined ? "" : quoteArr[r]}"`) : msg.reply(`seems as though Buddy Bot ran into an issue finding a quote!`);
                     }
           } else {
                     if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
