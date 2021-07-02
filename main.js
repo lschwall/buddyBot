@@ -26,7 +26,7 @@ client.on('message', msg => {
                               msg.channel.send(botInfo)
                     }
           }
-          if (channel === '860330287329574923') {
+          if (channel === '724090833128914965') {
                     if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
                               const [command, ...args] = msg.content.split('!romansaid ');
                               let quote = args.toString();
