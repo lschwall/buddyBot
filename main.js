@@ -29,7 +29,7 @@ client.on('message', msg => {
                               msg.channel.send(botInfo)
                     }
           }
-          if (channel === '860330287329574923') {
+          if (channel === '724090833128914965') {
                     if (command === '!romansaid') {
                               let quote = args.toString();
                               quoteArr.push(quote)
