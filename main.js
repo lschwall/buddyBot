@@ -6,7 +6,7 @@ const botInfo = new Discord.MessageEmbed()
           .setTitle(`OFFICIAL BUDDY COMMANDS`)
           .setColor('#00ffe5')
           .setDescription(`Official commands for buddyBot. Created by Larry.\n Repo: https://github.com/lschwall/buddyBot\n `)
-          .addField(`**GENERAL COMMANDS**`, `1. __*!buddy*__ : list of commands \n2. __*!romansaid <quote>*__ : add quote from roman\n3. __*!randomroman*__ : gives random roman quote\n`)
+          .addField(`**GENERAL COMMANDS**`, `1. __*!buddy*__ : list of commands \n2. __*!romansaid <quote>*__ : add quote from roman\n3. __*!randomroman*__ : gives random roman quote\n4. __*!romanreport*__ : lists all of the previous roman quotes`)
 
 
 
