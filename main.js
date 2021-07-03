@@ -8,9 +8,14 @@ const botInfo = new Discord.MessageEmbed()
           .setDescription(`Official commands for buddyBot. Created by Larry.\n Repo: https://github.com/lschwall/buddyBot\n `)
           .addField(`**GENERAL COMMANDS**`, `1. __*!buddy*__ : list of commands \n2. __*!romansaid <quote>*__ : add quote from roman\n3. __*!randomroman*__ : gives random roman quote\n`)
 
+
+
 let quoteArr = [];
 let prefix = '!';
 let channelID = '724090833128914965';
+let counter = 0;
+
+
 
 client.on('ready', connection => {
           console.log('bot online')
@@ -38,6 +43,16 @@ client.on('message', msg => {
                               let max = quoteArr.length
                               let r = Math.floor(Math.random() * (max + 1))
                               r === 0 ? msg.reply(`Your random Roman quote: "${quoteArr[r] === undefined ? "" : quoteArr[r]}"`) : msg.reply(`seems as though Buddy Bot ran into an issue finding a quote!`);
+                    }
+
+                    if (msg.content.toLowerCase().startsWith(prefix + 'romanreport')) {
+                              if (quoteArr.length < 1) {
+                                        msg.reply(`Roman has said nothing.`)
+                              } else {
+                                        msg.reply(`
+                                        \n${quoteArr.join(`\n`)}
+                                        `)
+                              }
                     }
           } else {
                     if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
