@@ -1,7 +1,10 @@
 const express = require('express');
+const path = require('path');
+const { bot } = require('../bot/main')
+
 const app = express();
-const bodyParser = require('body-parser')
 const port = process.env.PORT || 3000;
+const bodyParser = require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -36,6 +39,7 @@ const syncModels = async () => {
 
 connection();
 syncModels();
+bot();
 
 app.listen(port, () => {
     console.log(`App listening on port :${port}`);
