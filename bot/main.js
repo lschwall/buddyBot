@@ -1,10 +1,10 @@
 const bot = () => {
 
-
-    const axios = require('axios')
-    require('dotenv').config()
+    const pagination = require('discord.js-pagination');
     const Discord = require('discord.js');
     const client = new Discord.Client()
+    const axios = require('axios')
+    require('dotenv').config()
 
 
     const botInfo = new Discord.MessageEmbed()
@@ -15,6 +15,7 @@ const bot = () => {
     const host = 'http://localhost:3000'
     let prefix = '!';
     let counter = 0;
+    const MAX_FIELDS = 25;
 
 
 
@@ -32,7 +33,7 @@ const bot = () => {
                 msg.channel.send(botInfo)
             }
         }
-        if (channel === '861210684796960778') {
+        if (channel === process.env.BOT_SHIT) {
             if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
                 const [command, ...args] = msg.content.split('!romansaid ');
                 let quote = args.toString()
@@ -53,13 +54,60 @@ const bot = () => {
                 axios.get(`${host}/quote`)
                     .then(({ data }) => {
                         if (data.length > 0) {
-                            const embed = new Discord.MessageEmbed()
-                                .setTitle(`Roman's Quotes`)
-                                .setDescription(`|<><><><><><><><><><><><><><><><><><><><><><><><><>|`)
-                                .setColor('#00ffe5')
-                                .setFooter("|<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>|")
-                            data.map(i => embed.addField(`${i.quote}`, `______________`))
-                            msg.reply(embed)
+                            // const embed = new Discord.MessageEmbed()
+                            //     .setTitle(`Roman's Quotes`)
+                            //     .setDescription(`|<><><><><><><><><><><><><><><><><><><><><><><><><>|`)
+                            //     .setColor('#00ffe5')
+                            //     .setFooter("|<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>|")
+                            // data.map(i => embed.addField(`${i.id}. ${i.quote}`, `______________`))
+                            // msg.reply(embed)
+
+                            const run = async (message) => {
+                                const MAX_FIELDS = 25;
+                                // iterate over the commands and create field objects
+                                const fields = data.map(i => ({ id: i.quote, value: i.quote }))
+
+                                // if there is less than 25 fields, you can safely send the embed
+                                // in a single message
+                                if (fields.length <= MAX_FIELDS)
+                                    return message.reply(
+                                        new Discord.MessageEmbed()
+                                            .setTitle('Help')
+                                            .setDescription(`Prefix: ${prefix}`)
+                                            .addFields(fields),
+                                    );
+
+                                // if there are more, you need to create chunks w/ max 25 fields
+                                const chunks = chunkify(fields, MAX_FIELDS);
+                                console.log(chunks)
+                                // an array of embeds used by `discord.js-pagination`
+                                const pages = [];
+
+                                chunks.forEach((chunk) => {
+                                    // create a new embed for each 25 fields
+                                    pages.push(
+                                        new Discord.MessageEmbed()
+                                            .setTitle('Help')
+                                            .setDescription(`Prefix: ${prefix}`)
+                                            .addFields(chunk.id),
+                                    );
+                                });
+                                console.log(pages)
+                                pagination('some message', pages);
+                            }
+                            function chunkify(arr, len) {
+                                let chunks = [];
+                                let i = 0;
+                                let n = arr.length;
+
+                                while (i < n) {
+                                    chunks.push(arr.slice(i, (i += len)));
+                                }
+
+                                return chunks;
+                            }
+                            run(msg);
+
                         } else {
                             const embed = new Discord.MessageEmbed()
                                 .setTitle(`Roman's Quotes`)
