@@ -37,9 +37,13 @@ const bot = () => {
             if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
                 const [command, ...args] = msg.content.split('!romansaid ');
                 let quote = args.toString()
-                axios.post(`${host}/quote/create?quote=${encodeURI(quote)}`)
-                    .then(msg.reply(`thanks for adding`))
-                    .catch(err => { console.error(err) })
+                if (args.length > 0) {
+                    axios.post(`${host}/quote/create?quote=${encodeURI(quote)}`)
+                        .then(msg.reply(`thanks for adding`))
+                        .catch(err => { console.error(err) })
+                } else {
+                    msg.reply('Please add a quote')
+                }
             }
 
             if (msg.content.toLowerCase().startsWith(prefix + 'randomroman')) {
@@ -54,18 +58,10 @@ const bot = () => {
                 axios.get(`${host}/quote`)
                     .then(({ data }) => {
                         if (data.length > 0) {
-                            // const embed = new Discord.MessageEmbed()
-                            //     .setTitle(`Roman's Quotes`)
-                            //     .setDescription(`|<><><><><><><><><><><><><><><><><><><><><><><><><>|`)
-                            //     .setColor('#00ffe5')
-                            //     .setFooter("|<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>|")
-                            // data.map(i => embed.addField(`${i.id}. ${i.quote}`, `______________`))
-                            // msg.reply(embed)
-
                             const run = async (message) => {
                                 const MAX_FIELDS = 25;
                                 // iterate over the commands and create field objects
-                                const fields = data.map(i => ({ id: i.quote, value: i.quote }))
+                                const fields = message.map(i => ({ name: i.id, value: i.quote }))
 
                                 // if there is less than 25 fields, you can safely send the embed
                                 // in a single message
@@ -79,7 +75,6 @@ const bot = () => {
 
                                 // if there are more, you need to create chunks w/ max 25 fields
                                 const chunks = chunkify(fields, MAX_FIELDS);
-                                console.log(chunks)
                                 // an array of embeds used by `discord.js-pagination`
                                 const pages = [];
 
@@ -87,13 +82,14 @@ const bot = () => {
                                     // create a new embed for each 25 fields
                                     pages.push(
                                         new Discord.MessageEmbed()
-                                            .setTitle('Help')
-                                            .setDescription(`Prefix: ${prefix}`)
-                                            .addFields(chunk.id),
+                                            .setTitle(`Roman's Quotes`)
+                                            .setColor('#00ffe5')
+                                            .setDescription(`|<><><><><><><><><><><><><><><><><><><><><><><><><>|`)
+                                            .addFields(chunk),
                                     );
                                 });
-                                console.log(pages)
-                                pagination('some message', pages);
+                                console.log('chunks', chunks)
+                                pagination(msg, pages);
                             }
                             function chunkify(arr, len) {
                                 let chunks = [];
@@ -106,7 +102,7 @@ const bot = () => {
 
                                 return chunks;
                             }
-                            run(msg);
+                            run(data);
 
                         } else {
                             const embed = new Discord.MessageEmbed()
