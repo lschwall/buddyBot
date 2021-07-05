@@ -61,7 +61,7 @@ const bot = () => {
                             const run = async (message) => {
                                 const MAX_FIELDS = 25;
                                 // iterate over the commands and create field objects
-                                const fields = message.map(i => ({ name: i.id, value: i.quote }))
+                                const fields = message.map(i => ({ name: '___', value: `${i.id}. ${i.quote}` }))
 
                                 // if there is less than 25 fields, you can safely send the embed
                                 // in a single message
