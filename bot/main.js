@@ -7,15 +7,9 @@ const bot = () => {
     require('dotenv').config()
 
 
-    const botInfo = new Discord.MessageEmbed()
-        .setTitle(`OFFICIAL BUDDY COMMANDS`)
-        .setColor('#00ffe5')
-        .setDescription(`Official commands for buddyBot. Created by Larry.\n Repo: https://github.com/lschwall/buddyBot\n `)
-        .addField(`**GENERAL COMMANDS**`, `1. __*!buddy*__ : list of commands \n2. __*!romansaid <quote>*__ : add quote from roman\n3. __*!randomroman*__ : gives random roman quote\n4. __*!romanreport*__ : lists all of the previous roman quotes`)
     const host = 'http://localhost:3000'
+    let patCounter = 0;
     let prefix = '!';
-    let counter = 0;
-    const MAX_FIELDS = 25;
 
 
 
@@ -26,14 +20,25 @@ const bot = () => {
 
     client.on('message', msg => {
         const channel = msg.channel.id
+
+        if (msg.content.toLowerCase().startsWith(prefix + 'patbuddy')) {
+            patCounter++;
+            msg.reply(`Buddy smiles and wags his tail! He's been pat ${patCounter > 1 ? patCounter + ' times' : patCounter + ' time'}`)
+        }
+
         if (msg.content.toLowerCase().startsWith(prefix + 'buddy')) {
             if (msg.author.bot) {
                 return;
             } else {
+                const botInfo = new Discord.MessageEmbed()
+                    .setTitle(`OFFICIAL BUDDY COMMANDS`)
+                    .setColor('#00ffe5')
+                    .setDescription(`Official commands for buddyBot. Created by Larry.\n\n *Pat Counter: ${patCounter}*`)
+                    .addField(`**GENERAL COMMANDS**`, `1. __*!buddy*__ : list of commands and see number of pats \n2. __*!romansaid <quote>*__ : add quote from roman\n3. __*!randomroman*__ : gives random roman quote\n4. __*!romanreport*__ : lists all of the previous roman quotes\n5. __*!patbuddy*__ : give buddyBot a pat to make him happy!`)
                 msg.channel.send(botInfo)
             }
         }
-        if (channel === process.env.BOT_SHIT) {
+        if (channel === process.env.SALTY_SNAILS) {
             if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
                 const [command, ...args] = msg.content.split('!romansaid ');
                 let quote = args.toString()
@@ -88,7 +93,6 @@ const bot = () => {
                                             .addFields(chunk),
                                     );
                                 });
-                                console.log('chunks', chunks)
                                 pagination(msg, pages);
                             }
                             function chunkify(arr, len) {
