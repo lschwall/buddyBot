@@ -4,6 +4,7 @@ const bot = () => {
     const Discord = require('discord.js');
     const client = new Discord.Client()
     const axios = require('axios')
+    const cron = require('node-cron')
     require('dotenv').config()
 
 
@@ -39,6 +40,15 @@ const bot = () => {
             }
         }
         if (channel === process.env.SALTY_SNAILS) {
+
+            cron.schedule('0 0 8 * * *', () => {
+                axios.get(`${host}/quote/find`)
+                .then(({ data }) => {
+                    msg.reply(`Roman's daily affirmation: ${data}`)
+                })
+                .catch(err => console.error(err))
+            })
+
             if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
                 const [command, ...args] = msg.content.split('!romansaid ');
                 let quote = args.toString()
