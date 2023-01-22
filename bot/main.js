@@ -18,7 +18,7 @@ const bot = () => {
 
     })
 
-    const job = new cron.CronJob('0 0 17 * * *', async () => {
+    const job = new cron.CronJob('0 0 8 * * *', async () => {
         console.log('calling cron')
         const channel = client.channels.cache.get(`${process.env.SALTY_SNAILS}`);
         await axios.get(`${host}/quote/find`)
