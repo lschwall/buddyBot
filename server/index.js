@@ -37,8 +37,8 @@ const syncModels = async () => {
     }
 };
 
-connection();
-syncModels();
+// connection();
+// syncModels();
 bot();
 
 app.listen(port, () => {

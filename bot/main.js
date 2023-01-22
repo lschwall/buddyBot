@@ -4,9 +4,8 @@ const bot = () => {
     const Discord = require('discord.js');
     const client = new Discord.Client()
     const axios = require('axios')
-    const cron = require('node-cron')
+    const cron = require('cron')
     require('dotenv').config()
-
 
     const host = 'http://localhost:3000'
     let patCounter = 0;
@@ -18,6 +17,18 @@ const bot = () => {
         console.log('bot online')
 
     })
+
+    const job = new cron.CronJob('0 0 17 * * *', async () => {
+        console.log('calling cron')
+        const channel = client.channels.cache.get(`${process.env.SALTY_SNAILS}`);
+        await axios.get(`${host}/quote/find`)
+        .then(({ data }) => {
+            channel.send(`Roman's Daily Affirmation: ${data}`)
+        })
+        .catch(err => console.error(err))
+    })
+
+    job.start()
 
     client.on('message', msg => {
         const channel = msg.channel.id
@@ -40,14 +51,6 @@ const bot = () => {
             }
         }
         if (channel === process.env.SALTY_SNAILS) {
-
-            cron.schedule('0 0 8 * * *', () => {
-                axios.get(`${host}/quote/find`)
-                .then(({ data }) => {
-                    msg.reply(`Roman's daily affir: ${data}`)
-                })
-                .catch(err => console.error(err))
-            })
 
             if (msg.content.toLowerCase().startsWith(prefix + 'romansaid')) {
                 const [command, ...args] = msg.content.split('!romansaid ');
